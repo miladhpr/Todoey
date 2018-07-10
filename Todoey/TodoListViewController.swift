@@ -10,7 +10,7 @@ import UIKit
 
 class TodoListViewController: UITableViewController {
 
-    let itemArray = ["Task 1", "Task 2", "Task 3"]
+    var itemArray : [String] = [String]()
     override func viewDidLoad() {
         super.viewDidLoad()
         self.tableView.separatorStyle = .none
@@ -43,7 +43,28 @@ class TodoListViewController: UITableViewController {
         }
     }
     
+    // MARK - Add New Item
     
+    @IBAction func addButtonPressed(_ sender: UIBarButtonItem) {
+        var taskTitle = UITextField()
+        
+        let alert = UIAlertController(title: "Add New Todoey Item", message: "", preferredStyle: .alert)
+        
+        let action = UIAlertAction(title: "Add Item", style: .default) { (action) in
+            // What will happen when the user clicks on the Add Iteme UIAlert
+            if taskTitle.text != "" {
+                self.itemArray.append(taskTitle.text!)
+                self.tableView.reloadData()
+            }
+            print(self.itemArray)
+        }
+        alert.addAction(action)
+        alert.addTextField { (alertTextField) in
+            alertTextField.placeholder = "Task"
+            taskTitle = alertTextField
+        }
+        present(alert, animated: true, completion: nil)
+    }
     
 }
 
