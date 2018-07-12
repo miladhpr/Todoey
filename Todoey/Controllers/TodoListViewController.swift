@@ -12,7 +12,14 @@ import CoreData
 class TodoListViewController: UITableViewController {
 
     var itemArray : [Item] = [Item]()
+    var selectedCategory : TaskCategory? {
+        didSet{
+            loadData()
+        }
+    }
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+
+
 //    let defaults = UserDefaults.standard
     
 //    let dataFilePath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.appendingPathComponent("Items.plist")
@@ -20,8 +27,7 @@ class TodoListViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.tableView.separatorStyle = .none
-        print(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask))
-        loadData()
+//        print(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask))
 
 //        // To re-read data from user defaults
 //        if let items = defaults.array(forKey: "TodoListArray") as? [Item]{
@@ -90,6 +96,7 @@ class TodoListViewController: UITableViewController {
                 
                 newItem.title = taskTitle.text!
                 newItem.done = false
+                newItem.parentCategory = self.selectedCategory
                 
                 self.itemArray.append(newItem)
                 self.tableView.reloadData()
@@ -133,8 +140,15 @@ class TodoListViewController: UITableViewController {
 //        }
 //    }
     
-    func loadData(with request : NSFetchRequest<Item> = Item.fetchRequest()){
+    func loadData(with request : NSFetchRequest<Item> = Item.fetchRequest(), predicate : NSPredicate? = nil){
 //        let request : NSFetchRequest<Item> = Item.fetchRequest()
+        let categoryPredicate = NSPredicate(format: "parentCategory.name MATCHES %@", selectedCategory!.name!)
+        if let additionalPredicate = predicate{
+            request.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [additionalPredicate, categoryPredicate])
+        }else{
+            request.predicate = categoryPredicate
+        }
+        
         do{
             itemArray = try context.fetch(request)
             print(itemArray.count)
