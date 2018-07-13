@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14135" systemVersion="17F77" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
-    <entity name="Item" representedClassName="Item" syncable="YES" codeGenerationType="class">
+    <entity name="Item" representedClassName="Item" syncable="YES">
         <attribute name="done" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="title" attributeType="String" syncable="YES"/>
         <relationship name="parentCategory" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="TaskCategory" inverseName="items" inverseEntity="TaskCategory" syncable="YES"/>
     </entity>
-    <entity name="TaskCategory" representedClassName="TaskCategory" syncable="YES" codeGenerationType="class">
+    <entity name="TaskCategory" representedClassName="TaskCategory" syncable="YES">
         <attribute name="name" attributeType="String" syncable="YES"/>
         <relationship name="items" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Item" inverseName="parentCategory" inverseEntity="Item" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Item" positionX="106" positionY="9" width="128" height="88"/>
-        <element name="TaskCategory" positionX="-126" positionY="14" width="128" height="73"/>
+        <element name="Item" positionX="106" positionY="9" width="128" height="90"/>
+        <element name="TaskCategory" positionX="-126" positionY="14" width="128" height="75"/>
     </elements>
 </model>

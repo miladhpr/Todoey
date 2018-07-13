@@ -16,6 +16,8 @@
 		68CAB0FE20F571DC0090CEF1 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 68CAB0FD20F571DC0090CEF1 /* Default-568h@2x.png */; };
 		68CAB12220F6334F0090CEF1 /* DataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 68CAB12020F6334F0090CEF1 /* DataModel.xcdatamodeld */; };
 		68CAB12620F79DD30090CEF1 /* CategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68CAB12520F79DD30090CEF1 /* CategoryViewController.swift */; };
+		68CAB12E20F84A7C0090CEF1 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68CAB12D20F84A7C0090CEF1 /* Item.swift */; };
+		68CAB13020F84A8B0090CEF1 /* TaskCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68CAB12F20F84A8B0090CEF1 /* TaskCategory.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -31,6 +33,8 @@
 		68CAB0FD20F571DC0090CEF1 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		68CAB12120F6334F0090CEF1 /* DataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = DataModel.xcdatamodel; sourceTree = "<group>"; };
 		68CAB12520F79DD30090CEF1 /* CategoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryViewController.swift; sourceTree = "<group>"; };
+		68CAB12D20F84A7C0090CEF1 /* Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
+		68CAB12F20F84A8B0090CEF1 /* TaskCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskCategory.swift; sourceTree = "<group>"; };
 		818123262683F2DB6FF8BD7B /* Pods_Todoey.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Todoey.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -91,6 +95,8 @@
 			isa = PBXGroup;
 			children = (
 				68CAB12020F6334F0090CEF1 /* DataModel.xcdatamodeld */,
+				68CAB12D20F84A7C0090CEF1 /* Item.swift */,
+				68CAB12F20F84A8B0090CEF1 /* TaskCategory.swift */,
 			);
 			path = "Data Model";
 			sourceTree = "<group>";
@@ -244,6 +250,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				68CAB13020F84A8B0090CEF1 /* TaskCategory.swift in Sources */,
+				68CAB12E20F84A7C0090CEF1 /* Item.swift in Sources */,
 				68CAB12620F79DD30090CEF1 /* CategoryViewController.swift in Sources */,
 				68CAB0E820F54C540090CEF1 /* TodoListViewController.swift in Sources */,
 				68CAB12220F6334F0090CEF1 /* DataModel.xcdatamodeld in Sources */,

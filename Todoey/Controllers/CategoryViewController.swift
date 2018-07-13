@@ -8,11 +8,16 @@
 
 import UIKit
 import CoreData
+import RealmSwift
 
 class CategoryViewController: UITableViewController {
     
-    var catArray : [TaskCategory] = [TaskCategory]()
-    let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+    let realm = try! Realm()
+
+    var catArray : Results<TaskCategory>?
+    
+//    var catArray : [TaskCategory] = [TaskCategory]()
+//    let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     
 
     override func viewDidLoad() {
@@ -36,7 +41,7 @@ class CategoryViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return catArray.count
+        return catArray?.count ?? 1
     }
 
     @IBAction func addButtonPressed(_ sender: UIBarButtonItem) {
@@ -45,11 +50,12 @@ class CategoryViewController: UITableViewController {
         let alert = UIAlertController(title: "Add a new category", message: "", preferredStyle: .alert)
         let action = UIAlertAction(title: "Add category", style: .default) { (action) in
             if catTitle.text != "" {
-                let newCategory = TaskCategory(context: self.context)
-                newCategory.name = catTitle.text
-                self.catArray.append(newCategory)
+//                let newCategory = TaskCategory(context: self.context)
+                let newCategory = TaskCategory()
+                newCategory.name = catTitle.text!
+//                self.catArray.append(newCategory)
                 self.tableView.reloadData()
-                self.saveCategories()
+                self.saveCategories(category : newCategory)
             }
         }
         alert.addAction(action)
@@ -62,28 +68,34 @@ class CategoryViewController: UITableViewController {
     
     //MARK: - TableView Datasource Methods
     func loadCategories(){
-        let request : NSFetchRequest<TaskCategory> = TaskCategory.fetchRequest()
-        do{
-            catArray = try context.fetch(request)
-//            print(itemArray.count)
-        } catch{
-            print("Error Fetching Data from Context \(error)")
-        }
+        catArray = realm.objects(TaskCategory.self)
+        
+//        let request : NSFetchRequest<TaskCategory> = TaskCategory.fetchRequest()
+//        do{
+//            catArray = try context.fetch(request)
+////            print(itemArray.count)
+//        } catch{
+//            print("Error Fetching Data from Context \(error)")
+//        }
     }
     
-    func saveCategories(){
+    func saveCategories(category : TaskCategory){
         do{
-            try self.context.save()
+//            try self.context.save()
+            try realm.write {
+                realm.add(category)
+            }
         }catch{
             print("Error Saving to the Database\(error)")
         }
+        tableView.reloadData()
     }
     
     //MARK: - TableView Delegate Methods
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "CategoryCell", for: indexPath)
-        cell.textLabel?.text = catArray[indexPath.row].name
+        cell.textLabel?.text = catArray?[indexPath.row].name ?? "No Categories Added Yet"
         return cell
     }
     
@@ -95,72 +107,8 @@ class CategoryViewController: UITableViewController {
         let destinationVC = segue.destination as! TodoListViewController
         
         if let catindex = tableView.indexPathForSelectedRow {
-            destinationVC.selectedCategory = catArray[catindex.row]
+            destinationVC.selectedCategory = catArray?[catindex.row]
         }
     }
-    //MARK: - Data Manipulation Methods
-    
-    
-    
-    
-    
-    
-    
-    
-    /*
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
-
-        // Configure the cell...
-
-        return cell
-    }
-    */
-
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
-    }
-    */
-
-    /*
-    // Override to support editing the table view.
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            // Delete the row from the data source
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
-    }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 
 }
