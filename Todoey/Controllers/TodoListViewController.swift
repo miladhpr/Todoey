@@ -9,6 +9,7 @@
 import UIKit
 import CoreData
 import RealmSwift
+import ChameleonFramework
 
 class TodoListViewController: SwipeTableViewController {
 
@@ -20,6 +21,7 @@ class TodoListViewController: SwipeTableViewController {
             loadData()
         }
     }
+    @IBOutlet var searchBar: UISearchBar!
     
 //    let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
 
@@ -30,6 +32,30 @@ class TodoListViewController: SwipeTableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.tableView.separatorStyle = .none
+    }
+        
+    override func viewWillAppear(_ animated : Bool){
+        title = selectedCategory!.name
+        
+        if let colorHex = selectedCategory?.color{
+            guard let navBar = navigationController?.navigationBar else {fatalError("Navigation Controller Does Not Exist!")}
+            
+            if let navBarColor = UIColor(hexString: colorHex){
+                navBar.barTintColor = navBarColor
+                searchBar.barTintColor = navBarColor
+                navBar.tintColor = ContrastColorOf(navBarColor, returnFlat: true)
+                navBar.largeTitleTextAttributes = [NSAttributedStringKey.foregroundColor : ContrastColorOf(navBarColor, returnFlat: true)]
+                
+            }
+        }
+    }
+
+    override func viewWillDisappear(_ animated : Bool) {
+        guard let originalColor = UIColor(hexString: "1D9BF6") else {fatalError()}
+        navigationController?.navigationBar.barTintColor = originalColor
+        navigationController?.navigationBar.tintColor = FlatWhite()
+        navigationController?.navigationBar.largeTitleTextAttributes = [NSAttributedStringKey.foregroundColor : FlatWhite()]
+    }
         
 //        print(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask))
 
@@ -37,7 +63,6 @@ class TodoListViewController: SwipeTableViewController {
 //        if let items = defaults.array(forKey: "TodoListArray") as? [Item]{
 //            itemArray = items
 //        }
-    }
 
     //MARK - TableView Datasource Methods
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -55,6 +80,8 @@ class TodoListViewController: SwipeTableViewController {
         if let item = itemArray?[indexPath.row]{
             cell.textLabel?.text = item.title
             cell.accessoryType = item.done ? .checkmark : .none
+            cell.backgroundColor = UIColor(hexString: selectedCategory!.color)?.darken(byPercentage: CGFloat(indexPath.row)/CGFloat(itemArray!.count)) ?? FlatWhite()
+            cell.textLabel?.textColor = ContrastColorOf(cell.backgroundColor!, returnFlat: true)
         }else{
             cell.textLabel?.text = itemArray?[indexPath.row].title ?? "No Items Added Yet"
         }
